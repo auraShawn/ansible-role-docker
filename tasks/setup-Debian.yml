@@ -30,23 +30,15 @@
     state: present
   when: ansible_distribution == 'Ubuntu' and ansible_distribution_version is version('20.04', '>=')
 
-- name: Add Docker apt key.
-  apt_key:
-    url: "{{ docker_apt_gpg_key }}"
-    id: 9DC858229FC7DD38854AE2D88D81803C0EBFCD88
-    state: present
-    keyring: "{{ docker_apt_keyring }}"
-  register: add_repository_key
-  ignore_errors: "{{ docker_apt_ignore_key_error }}"
+#- name: Add Docker apt key.
+#  apt_key:
+#    url: "{{ docker_apt_gpg_key }}"
+#    id: 9DC858229FC7DD38854AE2D88D81803C0EBFCD88
+#    state: present
+#    keyring: "{{ docker_apt_keyring }}"
+#  register: add_repository_key
+#  ignore_errors: "{{ docker_apt_ignore_key_error }}"
   
-
-
-- name: Set Docker repository to edge
-  apt_repository: 
-    repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ansible_lsb.codename }} edge"
-    state: present
-    update_cache: yes
-
 - name: Ensure curl is present (on older systems without SNI).
   package: 
     name: curl
@@ -58,7 +50,7 @@
     curl -fsSL {{ docker_apt_gpg_key }} | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
   args:
     warn: false
-  when: add_repository_key is failed
+#  when: add_repository_key is failed
 
 #- name: Add Docker repository.
 #  apt_repository:
@@ -68,6 +60,6 @@
     
 - name: Add Docker repository and set to edge
   apt_repository: 
-    repo: "deb [arch=amd64 signed-by={{ docker_apt_keyring }}] {{ docker_repo_url }} {{ ansible_lsb.codename }} edge"
+    repo: "deb [arch=amd64 signed-by={{ docker_apt_keyring }}] {{ docker_repo_url }}/{{ ansible_distribution | lower }} {{ ansible_lsb.codename }} edge"
     state: present
     update_cache: yes
