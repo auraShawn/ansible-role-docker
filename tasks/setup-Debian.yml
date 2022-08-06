@@ -35,7 +35,7 @@
     url: "{{ docker_apt_gpg_key }}"
     id: 9DC858229FC7DD38854AE2D88D81803C0EBFCD88
     state: present
-    keyring: {{ docker_apt_keyring }}
+    keyring: "{{ docker_apt_keyring }}"
   register: add_repository_key
   ignore_errors: "{{ docker_apt_ignore_key_error }}"
   
