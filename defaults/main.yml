@@ -49,4 +49,4 @@ docker_users:
 
 # Docker daemon options as a dict
 docker_daemon_options:
-  storage-driver: "overlay2"
+  storage-driver: "zfs"
