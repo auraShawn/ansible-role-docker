@@ -44,7 +44,9 @@ docker_yum_repo_enable_test: '0'
 docker_yum_gpg_key: "{{ docker_repo_url }}/centos/gpg"
 
 # A list of users who will be added to the docker group.
-docker_users: [shawn]
+docker_users:
+  - shawn
 
 # Docker daemon options as a dict
-docker_daemon_options: {}
+docker_daemon_options:
+  storage-driver: "overlay2"
