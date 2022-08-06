@@ -3,7 +3,6 @@
   package:
     name:
       - docker
-      - docker-ce
       - docker-engine
       - docker.io
       - containerd
