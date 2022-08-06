@@ -59,6 +59,6 @@
     
 - name: Add Docker repository and set to edge
   apt_repository: 
-    repo: "deb [arch=amd64 signed-by={{ docker_apt_keyring }}] {{ docker_repo_url }}/{{ ansible_distribution | lower }} {{ ansible_lsb.codename }} edge"
+    repo: "deb [arch=amd64 signed-by={{ docker_apt_keyring }}] {{ docker_repo_url }}/{{ ansible_distribution | lower }}/{{docker_apt_release_channel }} {{ ansible_lsb.codename }} edge"
     state: present
     update_cache: yes
