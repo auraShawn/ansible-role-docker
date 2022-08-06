@@ -37,6 +37,12 @@
     keyring: {{ docker_apt_keyring }}
   register: add_repository_key
   ignore_errors: "{{ docker_apt_ignore_key_error }}"
+  
+- name: Set Docker repository to edge
+  apt_repository: 
+    repo: "deb [arch=amd64 signed-by={{docker_apt_keyring}}] https://download.docker.com/linux/ubuntu {{ ansible_lsb.codename }} edge"
+    state: present
+    update_cache: yes
 
 - name: Ensure curl is present (on older systems without SNI).
   package: 
