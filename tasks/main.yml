@@ -44,8 +44,8 @@
     enabled: "{{ docker_service_enabled }}"
   ignore_errors: "{{ ansible_check_mode }}"
 
-- name: Ensure handlers are notified now to avoid firewall conflicts.
-  meta: flush_handlers
+#- name: Ensure handlers are notified now to avoid firewall conflicts.
+#  meta: flush_handlers
 
 - include_tasks: docker-compose.yml
   when: docker_install_compose | bool
