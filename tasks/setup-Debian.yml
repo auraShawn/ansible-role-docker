@@ -3,7 +3,11 @@
   package:
     name:
       - docker
+      - docker-ce
       - docker-engine
+      - docker.io
+      - containerd
+      - runc
     state: absent
 
 - name: Ensure dependencies are installed.
@@ -11,6 +15,7 @@
     name:
       - apt-transport-https
       - ca-certificates
+      - lsb-release
     state: present
 
 - name: Ensure additional dependencies are installed (on Ubuntu < 20.04 and any other systems).
@@ -30,8 +35,11 @@
     url: "{{ docker_apt_gpg_key }}"
     id: 9DC858229FC7DD38854AE2D88D81803C0EBFCD88
     state: present
+    keyring: {{ docker_apt_keyring }}
   register: add_repository_key
   ignore_errors: "{{ docker_apt_ignore_key_error }}"
+  
+
 
 - name: Set Docker repository to edge
   apt_repository: 
@@ -40,18 +48,26 @@
     update_cache: yes
 
 - name: Ensure curl is present (on older systems without SNI).
-  package: name=curl state=present
+  package: 
+    name: curl
+    state: present
   when: add_repository_key is failed
 
 - name: Add Docker apt key (alternative for older systems without SNI).
   shell: >
-    curl -sSL {{ docker_apt_gpg_key }} | apt-key add -
+    curl -fsSL {{ docker_apt_gpg_key }} | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
   args:
     warn: false
   when: add_repository_key is failed
 
-- name: Add Docker repository.
-  apt_repository:
-    repo: "{{ docker_apt_repository }}"
+#- name: Add Docker repository.
+#  apt_repository:
+#    repo: "{{ docker_apt_repository }}"
+#    state: present
+#    update_cache: true
+    
+- name: Add Docker repository and set to edge
+  apt_repository: 
+    repo: "deb [arch=amd64 signed-by={{ docker_apt_keyring }}] {{ docker_repo_url }} {{ ansible_lsb.codename }} edge"
     state: present
-    update_cache: true
+    update_cache: yes
