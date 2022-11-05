@@ -15,6 +15,7 @@
       - apt-transport-https
       - ca-certificates
       - lsb-release
+      - systemd-journal-remote
     state: present
 
 - name: Ensure additional dependencies are installed (on Ubuntu < 20.04 and any other systems).
