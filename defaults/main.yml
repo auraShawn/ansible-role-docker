@@ -49,5 +49,5 @@ docker_users:
 
 # Docker daemon options as a dict
 docker_daemon_options:
-  storage-driver: "zfs",
+  storage-driver: "zfs"
   log-driver: "journald"
